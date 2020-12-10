@@ -24,11 +24,13 @@ def get_calendar(begin,end):
 
 cal = get_calendar(begin_custom,end_custom)
 
+
 #Create list of meetings
 MeetingSubject = [meeting.subject for meeting in cal if meeting.ResponseStatus == 3 or meeting.ResponseStatus == 1]
-MeetingStart = [meeting.start for meeting in cal if meeting.ResponseStatus == 3 or meeting.ResponseStatus == 1]
-MeetingEnd = [meeting.end for meeting in cal if meeting.ResponseStatus == 3 or meeting.ResponseStatus == 1]
+MeetingStart = [meeting.start.strftime('%m/%d/%Y, %H:%M:%S') for meeting in cal if meeting.ResponseStatus == 3 or meeting.ResponseStatus == 1]
+MeetingEnd = [meeting.end.strftime('%m/%d/%Y, %H:%M:%S') for meeting in cal if meeting.ResponseStatus == 3 or meeting.ResponseStatus == 1]
 MeetingLocation = [meeting.location for meeting in cal if meeting.ResponseStatus == 3 or meeting.ResponseStatus == 1]
+
 
 #Create dataframe of meeting lists
 try:
@@ -38,6 +40,7 @@ try:
                    'Location': MeetingLocation})
 except:
     pass
+
 #Split day and time
 df['Start Date'] = pd.to_datetime(df['Start']).dt.date
 df['Start Time'] = pd.to_datetime(df['Start']).dt.time
